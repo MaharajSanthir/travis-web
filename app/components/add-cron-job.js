@@ -31,7 +31,7 @@ export default Ember.Component.extend({
     const cron = store.createRecord('cron', {
       branch,
       interval: this.get('selectedInterval') || 'monthly',
-      disable_by_build: this.get('selectedOption') || false
+      run_only_when_new_commit: this.get('selectedOption') || false
     });
 
     this.reset();

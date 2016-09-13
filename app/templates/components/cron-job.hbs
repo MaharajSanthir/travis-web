@@ -1,8 +1,7 @@
 <div class="cron-job-text branch-name">{{cron.branch.name}}</div>
-<div class="cron-job-text enqueuing-interval">{{intervalText}}</div>
-<div class="cron-job-text disable-by-build">{{disableByBuild}}</div>
-<div class="cron-job-value">{{pretty-date cron.next_run}}</div>
-<div class="cron-job-value">{{pretty-date cron.last_run}}</div>
+<div class="cron-job-text">Last: {{pretty-date cron.last_run}}</div>
+<div class="cron-job-text">Next: {{pretty-date cron.next_run}}</div>
+<div class="cron-job-text run-only-when-new-commit">{{runOnlyWhenNewCommit}}</div>
 <div class="cron-job-action">
   <div class="tooltip">
     {{#if delete.isRunning}}
