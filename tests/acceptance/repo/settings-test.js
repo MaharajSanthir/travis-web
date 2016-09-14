@@ -1,3 +1,4 @@
+/* global moment */
 import { test } from 'qunit';
 import moduleForAcceptance from 'travis/tests/helpers/module-for-acceptance';
 import settingsPage from 'travis/tests/pages/settings';
@@ -80,8 +81,8 @@ moduleForAcceptance('Acceptance | repo settings', {
     this.dailyCron = server.create('cron', {
       interval: 'daily',
       run_only_when_new_commit: false,
-      next_run: '2016-05-20T13:19:19Z',
-      last_run: '2016-05-19T13:19:19Z',
+      last_run: moment(),
+      next_run: moment().add(1, 'days'),
       repository_id: repoId,
       branchId: dailyBranch.id
     });
@@ -89,8 +90,8 @@ moduleForAcceptance('Acceptance | repo settings', {
     server.create('cron', {
       interval: 'weekly',
       run_only_when_new_commit: true,
-      next_run: '2016-05-20T14:20:10Z',
-      last_run: '2016-05-13T14:20:10Z',
+      last_run: moment(),
+      next_run: moment().add(1, 'weeks'),
       repository_id: repoId,
       branchId: weeklyBranch.id
     });
@@ -118,13 +119,13 @@ test('view settings', function (assert) {
     assert.equal(settingsPage.environmentVariables(1).value, '••••••••••••••••');
 
     assert.equal(settingsPage.crons(0).branchName, 'daily-branch');
-    assert.ok(settingsPage.crons(0).lastRun.indexOf('Last:') === 0, 'Shows last run time of cron build');
-    assert.ok(settingsPage.crons(0).nextRun.indexOf('Next:') === 0, 'Shows next run time of cron build');
+    assert.equal(settingsPage.crons(0).lastRun, 'Last: less than a minute ago');
+    assert.equal(settingsPage.crons(0).nextRun, 'Next: about 24 hours from now');
     assert.ok(settingsPage.crons(0).runOnlyWhenNewCommitText.indexOf('Always run') === 0, 'expected cron to run even if no new commit after last build');
 
     assert.equal(settingsPage.crons(1).branchName, 'weekly-branch');
-    assert.ok(settingsPage.crons(1).lastRun.indexOf('Last:') === 0, 'Shows last run time of cron build');
-    assert.ok(settingsPage.crons(1).nextRun.indexOf('Next:') === 0, 'Shows next run time of cron build');
+    assert.equal(settingsPage.crons(1).lastRun, 'Last: less than a minute ago');
+    assert.equal(settingsPage.crons(1).nextRun, 'Next: 7 days from now');
     assert.ok(settingsPage.crons(1).runOnlyWhenNewCommitText.indexOf('Only if no new commit') === 0, 'expected cron to run only if no new commit after last build');
 
     assert.equal(settingsPage.sshKey.name, 'testy');
