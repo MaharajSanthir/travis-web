@@ -126,7 +126,7 @@ test('view settings', function (assert) {
     assert.equal(settingsPage.crons(1).branchName, 'weekly-branch');
     assert.equal(settingsPage.crons(1).lastRun, 'Last: less than a minute ago');
     assert.equal(settingsPage.crons(1).nextRun, 'Next: 7 days from now');
-    assert.ok(settingsPage.crons(1).runOnlyWhenNewCommitText.indexOf('Only if no new commit') === 0, 'expected cron to run only if no new commit after last build');
+    assert.ok(settingsPage.crons(1).runOnlyWhenNewCommitText.indexOf('Only if there is a new commit') === 0, 'expected cron to run Only if there is a new commit after last build');
 
     assert.equal(settingsPage.sshKey.name, 'testy');
     assert.equal(settingsPage.sshKey.fingerprint, 'dd:cc:bb:aa');
