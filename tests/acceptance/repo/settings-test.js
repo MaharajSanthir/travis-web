@@ -79,16 +79,18 @@ moduleForAcceptance('Acceptance | repo settings', {
 
     this.dailyCron = server.create('cron', {
       interval: 'daily',
-      disable_by_build: false,
-      next_enqueuing: '2016-05-20T13:19:19Z',
+      run_only_when_new_commit: false,
+      next_run: '2016-05-20T13:19:19Z',
+      last_run: '2016-05-19T13:19:19Z',
       repository_id: repoId,
       branchId: dailyBranch.id
     });
 
     server.create('cron', {
       interval: 'weekly',
-      disable_by_build: true,
-      next_enqueuing: '2016-05-20T14:20:10Z',
+      run_only_when_new_commit: true,
+      next_run: '2016-05-20T14:20:10Z',
+      last_run: '2016-05-13T14:20:10Z',
       repository_id: repoId,
       branchId: weeklyBranch.id
     });
@@ -116,12 +118,14 @@ test('view settings', function (assert) {
     assert.equal(settingsPage.environmentVariables(1).value, '••••••••••••••••');
 
     assert.equal(settingsPage.crons(0).branchName, 'daily-branch');
-    assert.ok(settingsPage.crons(0).enqueuingInterval.indexOf('Enqueues each day after') === 0, 'Shows daily enqueuing text');
-    assert.ok(settingsPage.crons(0).disableByBuildText.indexOf('Always run') === 0, 'expected cron to run even if no new commit after last build');
+    // assert.ok(settingsPage.crons(0).lastRun.indexOf('Last:') === 0, 'Shows last run time of cron build');
+    // assert.ok(settingsPage.crons(0).nextRun.indexOf('Next:') === 0, 'Shows next run time of cron build');
+    assert.ok(settingsPage.crons(0).runOnlyWhenNewCommitText.indexOf('Always run') === 0, 'expected cron to run even if no new commit after last build');
 
     assert.equal(settingsPage.crons(1).branchName, 'weekly-branch');
-    assert.ok(settingsPage.crons(1).enqueuingInterval.indexOf('Enqueues each') === 0, 'Shows weekly enqueuing text');
-    assert.ok(settingsPage.crons(1).disableByBuildText.indexOf('Only if no new commit') === 0, 'expected cron to run only if no new commit after last build');
+    // assert.ok(settingsPage.crons(1).lastRun.indexOf('Last:') === 0, 'Shows last run time of cron build');
+    // assert.ok(settingsPage.crons(1).nextRun.indexOf('Next:') === 0, 'Shows next run time of cron build');
+    assert.ok(settingsPage.crons(1).runOnlyWhenNewCommitText.indexOf('Only if no new commit') === 0, 'expected cron to run only if no new commit after last build');
 
     assert.equal(settingsPage.sshKey.name, 'testy');
     assert.equal(settingsPage.sshKey.fingerprint, 'dd:cc:bb:aa');
