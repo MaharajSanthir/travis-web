@@ -72,8 +72,9 @@ export default PageObject.create({
 
     item: {
       branchName: text('.branch-name'),
+      nextRun: text('.next-run'),
+      lastRun: text('.last-run'),
       runOnlyWhenNewCommitText: text('.run-only-when-new-commit'),
-
       delete: clickable('.icon-delete')
     }
   }),
